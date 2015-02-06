@@ -55,14 +55,10 @@
         }else if((elemBottom <  docViewTop)){
             return 0;
         }else{
-            var viewportHeight = $(window).height(),
-            scrollTop = $(window).scrollTop(),
-            elementOffsetTop = elemTop,
-            elementHeight = $("#"+elem).height();
-            
-            var distance = (scrollTop + viewportHeight) - elementOffsetTop;
-            var percentage = distance / ((viewportHeight + elementHeight) / 100);
-            percentage = Math.round(percentage);
+            console.log($("#"+elem));
+            var distance = $("#"+elem).height() - (docViewTop - elemTop );
+            var percent = (distance/$("#"+elem).height())*100;
+            percentage = percent.toFixed(2);
             return percentage;
         }
         //return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
