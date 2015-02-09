@@ -1,14 +1,14 @@
 <script type = "text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<?php 
-	include('functions.php');
-	$url = "https://www.youtube.com/watch?v=51FtenRFYos";
-	echo $url = $_POST['url'];
-	$content = crawl($url);
-	if($content['content'] > 0){
-		echo "Error Loading $url";
-	}else{
-		echo $content['content'];
-	}
+<?php
+    include('functions.php');
+    $url = "https://www.youtube.com/watch?v=51FtenRFYos";
+    echo $url = $_POST['url'];
+    $content = crawl($url);
+    if($content['content'] > 0){
+    echo "Error Loading $url";
+    }else{
+    echo $content['content'];
+    }
 ?>
 <script type = "text/javascript">
     $(document).ready(function(){
@@ -36,10 +36,10 @@
         if(attr == "Error"){
             stats = "Loading Error Youtube video";
         }else{
-            stats = "Video Size : "+attr.width+"px x "+attr.height+"px<br>";
-            stats += "Coordinates(x,y) : "+attr.top+" , "+attr.bottom+"<br>";
+            stats = "<b>Video Size</b><br>"+attr.width+"px x "+attr.height+"px<br>";
+            stats += "<b>Coordinates(x,y)</b><br> "+attr.top+" , "+attr.bottom+"<br>";
             var visibility = getVisibility(el);
-            stats += "Visibility : "+visibility+"%";
+            stats += "<b>Visibility </b><br>"+visibility+"%";
         }
         $("#stats-container").html(stats);
     }
