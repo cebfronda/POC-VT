@@ -10,9 +10,9 @@ function crawl( $url ){
             CURLOPT_COOKIEFILE     =>"cookie.txt", //set cookie file
             CURLOPT_COOKIEJAR      =>"cookie.txt", //set cookie jar
             CURLOPT_RETURNTRANSFER => true,     // return web page
-            CURLOPT_HEADER         => false,    // don't return headers
+            CURLOPT_HEADER         => true,    // don't return headers
             CURLOPT_FOLLOWLOCATION => true,     // follow redirects
-            CURLOPT_ENCODING       => "",       // handle all encodings
+            CURLOPT_ENCODING       => "UTF8",       // handle all encodings
             CURLOPT_AUTOREFERER    => true,     // set referer on redirect
             CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
             CURLOPT_TIMEOUT        => 120,      // timeout on response

@@ -1,15 +1,8 @@
-<script type = "text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<?php
-    include('functions.php');
-    $url = "https://www.youtube.com/watch?v=51FtenRFYos";
-    echo $url = $_POST['url'];
-    $content = crawl($url);
-    if($content['content'] > 0){
-    echo "Error Loading $url";
-    }else{
-    echo $content['content'];
-    }
+<?php 
+    $data = file_get_contents('https://www.youtube.com/watch?v=EvlQOjK0MPk');
+    echo $data;
 ?>
+
 <script type = "text/javascript">
     $(document).ready(function(){
         $("#container-stats").show();
@@ -68,9 +61,9 @@
     
     }
 </script>
-<div id = 'container-stats' style = 'width: 300px; height: 100px; min-height: 100px; max-height: 100px; margin-right: 10px; padding: 10px; border: 3px solid rgb(255, 255, 255); background-color: #F4FA58; margin-top: 8px;z-index:99999999999999; top: 0; position:fixed; right: 0' >
+<div id = "container-stats" style = "width: 300px; height: 100px; min-height: 100px; max-height: 100px; margin-right: 10px; padding: 10px; border: 3px solid rgb(255, 255, 255); background-color: #F4FA58; margin-top: 8px;z-index:99999999999999; top: 0; position:fixed; right: 0" >
             <B>STATS</B>
-            <div id = 'stats-container'>
+            <div id = "stats-container">
             </div>
-            <div style = 'clear:both'>&nbsp;</div>
+            <div style = "clear:both">&nbsp;</div>
         </div>
