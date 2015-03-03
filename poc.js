@@ -215,7 +215,6 @@ var video = document.getElementsByTagName("video")[0];
 for (i = 0; i < videos.length; i++) {
     videos[i].addEventListener("click", getStats);
 }
-
 video.addEventListener("timeupdate", startPOC);
 window.addEventListener("scroll", startPOC)                                                                        
 //video.addEventListener("loadstart", getStats);
