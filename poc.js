@@ -100,7 +100,7 @@ function getStats(){
             VideoAd.style["padding"] = "4px";
             VideoAd.style["text-align"] = "center";
             VideoAd.style["font-weight"] = "bold";
-            document.getElementById("detection-stat").innerHTML = "";
+            document.getElementById("ad-detection-stat").innerHTML = "";
         }
         document.getElementById("ad-detection").innerHTML = VideoAdsDetectionStat;
     }else{
@@ -183,10 +183,18 @@ function AdUnitDetection(){
     }
 }
 
-createElement();
-getStats();
+function startPOC(){
+    var statContainer = document.getElementById("stats-container");
+    if(statContainer == null){
+        createElement();
+    }
+    console.log('Restarted');
+    getStats();
+    
+}
+startPOC();
 videos = document.getElementsByClassName("yt-lockup-dismissable");
-window.addEventListener("scroll", getStats);
+window.addEventListener("scroll", startPOC);
 for (i = 0; i < videos.length; i++) {
     videos[i].addEventListener("click", getStats);
 }
