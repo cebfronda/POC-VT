@@ -90,8 +90,19 @@ function getStats(){
             VideoAdStats += "<td>Visibility</td>";
             VideoAdStats += "<td><b>"+getVisibility(el)+" %</b></td>";
             VideoAdStats += "</tr>";
+            
+            var time = getCurrentTime();
+            time = time.toFixed(time);
+            if(time > 2){
+                VideoAdStats += "<tr>";
+                VideoAdStats += "<td>Viewable for 2 seconds</td>";
+                VideoAdStats += "</tr>";
+                
+            }
+            
             VideoAdStats += "</table><br>";           
             document.getElementById("ad-detection-stat").innerHTML = VideoAdStats;
+            getViewability();
             
         }else{
             VideoAdsDetectionStat = "No Video Ads Detected";
@@ -192,11 +203,19 @@ function startPOC(){
     getStats();
     
 }
+
+function getCurrentTime(){
+  var vid = document.getElementsByTagName("video")[0];
+  return vid.currentTime;
+}
+
 startPOC();
 videos = document.getElementsByClassName("yt-lockup-dismissable");
-window.addEventListener("scroll", startPOC);
+var video = document.getElementsByTagName("video")[0];
 for (i = 0; i < videos.length; i++) {
     videos[i].addEventListener("click", getStats);
 }
-var video = document.getElementsByTagName("video")[0];
+
+video.addEventListener("timeupdate", startPOC);
+window.addEventListener("scroll", startPOC)                                                                        
 //video.addEventListener("loadstart", getStats);
