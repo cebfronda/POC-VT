@@ -93,9 +93,10 @@ function getStats(){
             
             var time = getCurrentTime();
             time = time.toFixed(time);
-            if(time > 2){
+            if(time > 2){ 
+                VideoAdStats += "<tr><td colspan = 2>&nbsp;</td></tr>";
                 VideoAdStats += "<tr>";
-                VideoAdStats += "<td>Viewable for 2 seconds</td>";
+                VideoAdStats += "<td><b>Viewable for 2 seconds</b></td>";
                 VideoAdStats += "</tr>";
                 
             }
@@ -134,7 +135,7 @@ function getCoordinates(elementid){
 function getVisibility(element){
     var docViewTop = window.screen.availTop;
     var docViewBottom = docViewTop + window.screen.availHeight;
-    var el = document.getElementsByClassName(element)[0];
+    var el = document.getElementsByClassName(element)[0]; 
     var elemTop = el.offsetTop;
     var elemBottom = elemTop + el.offsetHeight;
     if(elemTop >= docViewTop && elemBottom <= docViewBottom){
