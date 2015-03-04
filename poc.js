@@ -103,7 +103,6 @@ function getStats(){
             
             VideoAdStats += "</table><br>";           
             document.getElementById("ad-detection-stat").innerHTML = VideoAdStats;
-            getViewability();
             
         }else{
             VideoAdsDetectionStat = "No Video Ads Detected";
@@ -131,9 +130,9 @@ function getCoordinates(elementid){
         return "Error";
     }
 }
-
+                                                                
 function getVisibility(element){
-    var docViewTop = window.screen.availTop;
+    var docViewTop = window.pageYOffset;
     var docViewBottom = docViewTop + window.screen.availHeight;
     var el = document.getElementsByClassName(element)[0]; 
     var elemTop = el.offsetTop;
