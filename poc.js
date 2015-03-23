@@ -4,7 +4,6 @@ function createElement(){
     div.style["width"] = "300px";
     div.style["margin-right"] = "10px"; 
     div.style["padding"] = "10px"; 
-    div.style["border"] = "3px solid rgb(255, 255, 255)"; 
     div.style["background-color"] = "#F4FA58"; 
     div.style["margin-top"] = "8px";
     div.style["z-index"] = "99999999999999"; 
@@ -14,17 +13,40 @@ function createElement(){
     
     var youtubeBodyContainer = document.getElementById("body-container");
     youtubeBodyContainer.appendChild(div);
-    document.getElementById("stats-container").innerHTML = "<div id = 'ad-detection'></div><div id = 'ad-detection-stat'></div><br>";
+    document.getElementById("stats-container").innerHTML = "<div id = 'page-url-container' style = 'display:none;'></div><div id = 'ad-detection' style = 'text-align:center'>Script Initialize and Loaded</div><div id = 'ad-detection-stat'></div><br>";
+}
+
+
+function updateURL(){
+    document.getElementById("page-url-container").innerHTML = window.location.href;
+}
+
+function AddMainVideoPlayingStatus() {
+    var VideoAdsContainer = document.createElement('div');
+    VideoAdsContainer.id = "MainVideoPlayingStatus";
+    VideoAdsContainer.style["background-color"] = "blue";
+    VideoAdsContainer.style["color"] = "white";
+    VideoAdsContainer.style["padding"] = "4px";
+    VideoAdsContainer.style["text-align"] = "center";
+    VideoAdsContainer.style["font-weight"] = "bold";
+    VideoAdsContainer.textContent = "Main Video Playing";
+    VideoAdsMainContainer = document.getElementById("stats-container");
+    VideoAdsMainContainer.appendChild(VideoAdsContainer);
 }
 
 function getStats(){
     var el = "html5-video-container";
     var videosrc = checkVideoContent();
+    var onrecord = document.getElementById("page-url-container").innerHTML;
+    var playing = window.location.href;
     if(videosrc != ""){
+        var div = document.getElementById("stats-container");
+        div.style["display"] = "block";
         var VideoAds = AdUnitDetection();
         var VideoAdsDetectionStat;
         var VideoAd = document.getElementById("ad-detection");
         if(VideoAds){
+            updateURL();
             VideoAdsDetectionStat = "Video Ads Detected";
             VideoAd.style["background-color"] = "green";
             VideoAd.style["color"] = "white";
@@ -33,46 +55,53 @@ function getStats(){
             VideoAd.style["font-weight"] = "bold";
             
             var VideoAdS = document.getElementById("ad-detection-stat");
-            VideoAdS.style["color"] = "green";
+            VideoAdS.style["color"] = "black";
             //Ad Video Stats
             var VideoAdStats;
             var VideoAdSAttr = getCoordinates(el);
             console.log(VideoAdSAttr);
-            VideoAdStats = "<br><table style = 'width:95%'>";
+            VideoAdStats = "<br><table id = 'video-stat-table-container' style = 'width:95%'>";
             
             // Size
+            var w = VideoAdSAttr.width;
+            var h = VideoAdSAttr.height;
             VideoAdStats += "<tr><td colspan = 2><center><b>Video Size</b></center></td></tr>";
             VideoAdStats += "<tr>";
             VideoAdStats += "<td>Width</td>";
-            VideoAdStats += "<td><b>"+VideoAdSAttr.width+"px</b><td>";
+            VideoAdStats += "<td><b>"+w.toFixed(2)+"px</b><td>";
             VideoAdStats += "</tr>";
             VideoAdStats += "<tr>";
             VideoAdStats += "<td>Height</td>";
-            VideoAdStats += "<td><b>"+VideoAdSAttr.height+"px</b></td>";
+            VideoAdStats += "<td><b>"+h.toFixed(2)+"px</b></td>";
             VideoAdStats += "</tr>";
             VideoAdStats += "<tr><td colspan = 2>&nbsp;</td></tr>";
             
             //Position
+            var t = VideoAdSAttr.top;
+            var b = VideoAdSAttr.bottom;
+            var l = VideoAdSAttr.left;
+            var r = VideoAdSAttr.right;
             VideoAdStats += "<tr><td colspan = 2><center><b>Video Position</b></center></td></tr>";
             VideoAdStats += "<tr>";
             VideoAdStats += "<td>Top</td>";
-            VideoAdStats += "<td><b>"+VideoAdSAttr.top+"px</b><td>";
+            VideoAdStats += "<td><b>"+t.toFixed(2)+"px</b><td>";
             VideoAdStats += "</tr>";
             VideoAdStats += "<tr>";
             VideoAdStats += "<td>Bottom</td>";
-            VideoAdStats += "<td><b>"+VideoAdSAttr.bottom+"px</b></td>";
+            VideoAdStats += "<td><b>"+b.toFixed(2)+"px</b></td>";
             VideoAdStats += "</tr>";
             VideoAdStats += "<tr>";
             VideoAdStats += "<td>Left</td>";
-            VideoAdStats += "<td><b>"+VideoAdSAttr.left+"px</b><td>";
+            VideoAdStats += "<td><b>"+l.toFixed(2)+"px</b><td>";
             VideoAdStats += "</tr>";
             VideoAdStats += "<tr>";
             VideoAdStats += "<td>Right</td>";
-            VideoAdStats += "<td><b>"+VideoAdSAttr.right+"px</b></td>";
+            VideoAdStats += "<td><b>"+r.toFixed(2)+"px</b></td>";
             VideoAdStats += "</tr>";
             VideoAdStats += "<tr><td colspan = 2>&nbsp;</td></tr>";
             
             //Other Details
+            var visibility = getVisibility(el);
             VideoAdStats += "<tr><td colspan = 2><center><b>Other Details</b></center></td></tr>";
             VideoAdStats += "<tr>";
             VideoAdStats += "<td>Video Duration</td>";
@@ -83,12 +112,8 @@ function getStats(){
             VideoAdStats += "<td><b>"+getVideoAutoPlay()+"</b></td>";
             VideoAdStats += "</tr>";
             VideoAdStats += "<tr>";
-            VideoAdStats += "<td>Coordinates</td>";
-            VideoAdStats += "<td><b>"+VideoAdSAttr.top+" , "+VideoAdSAttr.bottom+"</b></td>";
-            VideoAdStats += "</tr>";
-            VideoAdStats += "<tr>";
             VideoAdStats += "<td>Visibility</td>";
-            VideoAdStats += "<td><b>"+getVisibility(el)+" %</b></td>";
+            VideoAdStats += "<td><b>"+visibility+" %</b></td>";
             VideoAdStats += "</tr>";
             
             var time = getCurrentTime();
@@ -98,25 +123,49 @@ function getStats(){
                 VideoAdStats += "<tr>";
                 VideoAdStats += "<td><b>Viewable for 2 seconds</b></td>";
                 VideoAdStats += "</tr>";
-                
             }
             
             VideoAdStats += "</table><br>";           
             document.getElementById("ad-detection-stat").innerHTML = VideoAdStats;
+            document.getElementById("ad-detection").innerHTML = VideoAdsDetectionStat;
             
+            if(visibility > 50){
+                viewability(true);
+            }else{
+                viewability(false);
+            }
         }else{
-            VideoAdsDetectionStat = "No Video Ads Detected";
-            VideoAd.style["background-color"] = "red";
-            VideoAd.style["color"] = "white";
-            VideoAd.style["padding"] = "4px";
-            VideoAd.style["text-align"] = "center";
-            VideoAd.style["font-weight"] = "bold";
-            document.getElementById("ad-detection-stat").innerHTML = "";
+            if(onrecord != playing){
+                updateURL();
+                var div = document.getElementById("stats-container");
+                div.style["background-color"] = "#0099FF";
+                div.style["color"] = "black";
+                
+                VideoAdsDetectionStat = "No Video Ads Detected";
+                VideoAd.style["background-color"] = "#0099FF";
+                VideoAd.style["color"] = "black";
+                VideoAd.style["padding"] = "4px";
+                VideoAd.style["text-align"] = "center";
+                VideoAd.style["font-weight"] = "bold";
+                document.getElementById("ad-detection-stat").innerHTML = "";
+                document.getElementById("ad-detection").innerHTML = VideoAdsDetectionStat;
+                var element = document.getElementById("MainVideoPlayingStatus");
+                if(element != null){
+                    element.outerHTML = "";
+                    delete element;
+                }
+            }else if(document.getElementById("ad-detection").innerHTML == "Video Ads Detected"){
+                var statusCheck = document.getElementById("MainVideoPlayingStatus");
+                if(statusCheck == null){
+                    AddMainVideoPlayingStatus();
+                }
+            }
+            
         }
-        document.getElementById("ad-detection").innerHTML = VideoAdsDetectionStat;
+        
     }else{
-        //document.getElementById("stats-container").innerHTML = "";
-        //document.getElementById("stats-container").style.visibility = "hidden";
+        var div = document.getElementById("stats-container");
+        div.style["display"] = "none";
     }
     
 }
@@ -194,12 +243,23 @@ function AdUnitDetection(){
     }
 }
 
+function viewability(viewable){
+    var div = document.getElementById("stats-container");
+    if(viewable == true){
+        div.style["background-color"] = "#32CD32";
+        div.style["color"] = "white"; 
+    }else{
+        div.style["background-color"] = "#FFCC33";
+        div.style["color"] = "white";
+    
+    }
+}
+
 function startPOC(){
     var statContainer = document.getElementById("stats-container");
     if(statContainer == null){
         createElement();
     }
-    console.log('Restarted');
     getStats();
     
 }
@@ -210,11 +270,14 @@ function getCurrentTime(){
 }
 
 startPOC();
-videos = document.getElementsByClassName("yt-lockup-dismissable");
+
 var video = document.getElementsByTagName("video")[0];
+/*
+
 for (i = 0; i < videos.length; i++) {
+videos = document.getElementsByClassName("yt-lockup-dismissable");
     videos[i].addEventListener("click", getStats);
-}
+}*/
 video.addEventListener("timeupdate", startPOC);
 window.addEventListener("scroll", startPOC)                                                                        
 //video.addEventListener("loadstart", getStats);
